@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Music {
+  id            Int           @id @default(autoincrement())
+  title         String        @db.VarChar(50)
+  artists       String        @db.VarChar(100)
+  album         String        @db.VarChar(100)
+  gender        String        @db.VarChar(100)
+  single        Boolean       @db.TinyInt
+  release_year  Int           @db.Year
+  duration      DateTime      @db.Time
+}
+
+enum Role {
+  User
+  Admin
+}
+
+model User {
+  id            BigInt        @id @default(autoincrement()) @db.BigInt
+  name          String        @db.VarChar(50)
+  user          String        @db.VarChar(100) @unique
+  type          Role
+  email         String        @db.VarChar(100) @unique
+  password      String        @db.VarChar(100)
+  birth_date    DateTime      @db.Date
+  regis_date    DateTime      @db.Timestamp @default(now())
+}
+
+model Product {
+  id            Int           @id @default(autoincrement()) @db.MediumInt
+  name          String        @db.VarChar(50)
+  descripition  String        @db.Text
+  price         Decimal       @db.Decimal(10,2)
+  stock         Int           @default(0)
+  assessment    Decimal       @db.Decimal(3,2)
+  register_date DateTime      @db.Timestamp @default(now())
+}
